@@ -53,7 +53,7 @@ const SwitchNetwork = () => {
           <option
             key={index}
             value={c.chainId}
-            selected={(chainIdOld || "") === Number(c.chainId)}
+            selected={(chainId) === Number(c.chainId)}
           >
             {c.chainName}
           </option>

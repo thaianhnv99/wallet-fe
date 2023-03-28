@@ -4,11 +4,9 @@ import { Web3Provider } from "@ethersproject/providers";
 import { useCallback, useEffect } from "react";
 import { injected } from "../../utils/connecttors";
 import { formatAddress } from "../../utils/helpers";
-import ETHbalanceSWR from "./ETHBalanceSWR";
 import SwitchNetwork from "./SwitchNetwork";
-import Coin from "../common/Coin";
 import Votes from "../Votes";
-import ReadERC20 from "../ReadERC20";
+import ETHbalance from "./ETHbalance";
 
 const Wallet = () => {
   const {
@@ -48,7 +46,7 @@ const Wallet = () => {
     }
   }, [handleConnect, provider]);
 
-  const addressContract='0x5fbdb2315678afecb367f032d93f642f64180aa3'
+  const addressContract='0x6ce9925389763Eaac35Ba023645A9c1996Ffc464'
 
   return (
     <div
@@ -84,14 +82,12 @@ const Wallet = () => {
         }}
       >
         <p>Address: {formatAddress(account || "", 4)}</p>
-        <ETHbalanceSWR />
+        <ETHbalance />
         <p>ChainId: {chainId}</p>
         <SwitchNetwork />
       </div>
       <hr />
-      <ReadERC20 addressContract={addressContract} />
-      <hr />
-      <Votes />
+      <Votes addressContract={addressContract}/>
     </div>
   );
 };

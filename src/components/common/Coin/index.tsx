@@ -4,7 +4,7 @@ const Coin = ({
   token,
 }: {
   perc: number;
-  setPerc: (num: number) => void;
+  setPerc: (pool: boolean) => void;
   token: string;
 }) => {
   return (
@@ -28,8 +28,8 @@ const Coin = ({
           marginTop: "1rem",
         }}
       >
-        <button onClick={() => setPerc(perc + 1)}>Up</button>
-        <button onClick={() => setPerc(perc - 1)}>Down</button>
+        <button onClick={() => setPerc(true)}>Up</button>
+        <button onClick={() => setPerc(false)}>Down</button>
       </div>
     </div>
   );
