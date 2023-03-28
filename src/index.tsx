@@ -1,15 +1,29 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import reportWebVitals from "./reportWebVitals";
+import { Web3ReactProvider } from "@web3-react/core";
+import { Web3Provider } from "@ethersproject/providers";
+import Wallet from "./components/Wallet";
+import Web3ReactManager from "./components/common/Web3ReactManager";
+
+function getLibrary(provider: any): Web3Provider {
+  const web3Provider = new Web3Provider(provider);
+  web3Provider.pollingInterval = 12_000;
+  return web3Provider;
+}
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <Web3ReactProvider getLibrary={getLibrary}>
+      <Web3ReactManager>
+        {/* <App /> */}
+        <Wallet />
+      </Web3ReactManager>
+    </Web3ReactProvider>
   </React.StrictMode>
 );
 
