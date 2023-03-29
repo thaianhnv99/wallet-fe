@@ -7,9 +7,13 @@ import abi from "../../config/abi/ERC20ABI.json";
 
 const Votes = ({ addressContract }: { addressContract: any }) => {
   const { account, active, library } = useWeb3React<Web3Provider>();
-  const [eth, setEth] = useState(0);
-  const [btc, setBtc] = useState(0);
-  const [link, setLink] = useState(0);
+
+  const [tickers, setTicker] = useState<{ token: string; perc: number }[]>([
+    { token: "ETH", perc: 0 },
+    { token: "BTC", perc: 0 },
+    { token: "LINK", perc: 0 },
+    { token: "HEX", perc: 0 },
+  ]);
 
   const contract = useMemo(() => {
     return new Contract(addressContract, abi, library);
@@ -29,7 +33,7 @@ const Votes = ({ addressContract }: { addressContract: any }) => {
   );
 
   const getRatio = useCallback(
-    async (tick: string, setPerc: (num: number) => void) => {
+    async (tick: string) => {
       const { up, down } = await contract["getVotes"](tick).then(
         (result: any) => result
       );
@@ -37,10 +41,15 @@ const Votes = ({ addressContract }: { addressContract: any }) => {
       const upNum = Number(up);
       const downNum = Number(down);
       const ratio = Math.round((upNum / (upNum + downNum)) * 100);
-
-      console.log(ratio);
-
-      setPerc(ratio);
+      setTicker((prev) =>
+        [...prev].map((item) => {
+          if (item.token === tick) {
+            return { ...item, perc: ratio };
+          } else {
+            return item;
+          }
+        })
+      );
     },
     [contract]
   );
@@ -50,9 +59,9 @@ const Votes = ({ addressContract }: { addressContract: any }) => {
     // const btc = await getTicker(1);
     // const link = await getTicker(2);
 
-    getRatio("ETH", setEth);
-    getRatio("BTC", setBtc);
-    getRatio("LINK", setLink);
+    getRatio("ETH");
+    getRatio("BTC");
+    getRatio("LINK");
   }, [getRatio]);
 
   useEffect(() => {
@@ -64,6 +73,11 @@ const Votes = ({ addressContract }: { addressContract: any }) => {
   ///
   const handleVote = useCallback(
     async (tick: string, pool: boolean) => {
+      if (!account || !active) {
+        alert('Connect metamark');
+        return;
+      };
+
       const contractWithSigner = new Contract(
         addressContract,
         abi,
@@ -71,20 +85,19 @@ const Votes = ({ addressContract }: { addressContract: any }) => {
       );
 
       try {
-        const tx = await contractWithSigner.vote(tick, pool).then(() => {
-          console.log("success");
-        });
+        const tx = await contractWithSigner.vote(tick, pool);
+        await tx.wait();
 
-        if (tx) {
-          fetchTicker();
-        }
-      } catch (error) {
-        console.log(error);
+        console.log("success", tx);
+        fetchTicker();
+        alert(
+          `Successfull\tLink: https://mumbai.polygonscan.com/tx/${tx.hash}`
+        );
+      } catch (error: any) {
+        alert(error.data.message);
       }
-
-      console.log(contractWithSigner);
     },
-    [addressContract, fetchTicker, library]
+    [account, active, addressContract, fetchTicker, library]
   );
 
   return (
@@ -97,21 +110,16 @@ const Votes = ({ addressContract }: { addressContract: any }) => {
         marginTop: "5rem",
       }}
     >
-      <Coin
-        perc={eth}
-        token={"ETH"}
-        setPerc={(pool) => handleVote("ETH", pool)}
-      />
-      <Coin
-        perc={btc}
-        token={"BTC"}
-        setPerc={(pool) => handleVote("BTC", pool)}
-      />
-      <Coin
-        perc={link}
-        token={"LINK"}
-        setPerc={(pool) => handleVote("LINK", pool)}
-      />
+      {tickers.map((item, index) => {
+        return (
+          <Coin
+            key={index}
+            perc={item.perc}
+            token={item.token}
+            setPerc={(pool) => handleVote(item.token, pool)}
+          />
+        );
+      })}
     </div>
   );
 };

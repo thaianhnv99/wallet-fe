@@ -1,8 +1,12 @@
 import { useWeb3React } from "@web3-react/core";
 import { UserRejectedRequestError } from "@web3-react/injected-connector";
 import { Web3Provider } from "@ethersproject/providers";
-import { useCallback, useEffect } from "react";
-import { injected } from "../../utils/connecttors";
+import { useCallback, useEffect, useMemo } from "react";
+import {
+  getStateConnect,
+  injected,
+  setStateConnect,
+} from "../../utils/connecttors";
 import { formatAddress } from "../../utils/helpers";
 import SwitchNetwork from "./SwitchNetwork";
 import Votes from "../Votes";
@@ -17,10 +21,14 @@ const Wallet = () => {
     setError,
     active,
     library: provider,
-    connector,
   } = useWeb3React<Web3Provider>();
 
-  console.log(chainId, account, active, provider, connector);
+  const connected = getStateConnect();
+  const stateConnectedApp = useMemo(() => {
+    return !!(active && account && connected);
+  }, [account, active, connected]);
+
+  console.log();
 
   const handleConnect = useCallback(() => {
     activate(
@@ -34,19 +42,15 @@ const Wallet = () => {
       },
       false
     );
+    setStateConnect(true);
   }, [activate, setError]);
 
   const handleDisconnect = useCallback(() => {
     deactivate();
+    setStateConnect(false);
   }, [deactivate]);
 
-  useEffect(() => {
-    if (provider) {
-      handleConnect();
-    }
-  }, [handleConnect, provider]);
-
-  const addressContract='0x6ce9925389763Eaac35Ba023645A9c1996Ffc464'
+  const addressContract = "0x6ce9925389763Eaac35Ba023645A9c1996Ffc464";
 
   return (
     <div
@@ -58,14 +62,17 @@ const Wallet = () => {
     >
       <h2>Welcome to a decentralized Application</h2>
       <div>
-        <button hidden={!!(active && account)} onClick={handleConnect}>
+        <button
+          hidden={stateConnectedApp}
+          onClick={handleConnect}
+        >
           Connect Metamark
         </button>
         <button
           style={{
             marginLeft: "10px",
           }}
-          hidden={!(active || account)}
+          hidden={!stateConnectedApp}
           onClick={handleDisconnect}
         >
           Disconnect
@@ -73,7 +80,7 @@ const Wallet = () => {
       </div>
 
       <div
-        hidden={!(active || account)}
+        hidden={!stateConnectedApp}
         style={{
           width: "min-content",
           margin: "auto",
@@ -87,7 +94,7 @@ const Wallet = () => {
         <SwitchNetwork />
       </div>
       <hr />
-      <Votes addressContract={addressContract}/>
+      <Votes addressContract={addressContract} />
     </div>
   );
 };
