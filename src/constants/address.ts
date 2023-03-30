@@ -1,0 +1,17 @@
+import { CHAINS_ID } from "./chains";
+
+export const ADDRESS_SC_VOTE = {
+    [CHAINS_ID.MATIC_TESTNET]: '0x6ce9925389763Eaac35Ba023645A9c1996Ffc464',
+    [CHAINS_ID.ETHER]: '',
+    [CHAINS_ID.BSC]: '',
+    [CHAINS_ID.MATIC]: '',
+    [CHAINS_ID.BSC_TESTNET]: ''
+}
+
+export const ADDRESS_SC_TOKEN = {
+    [CHAINS_ID.MATIC_TESTNET]: '0x19B33c61Bc7Ed6f5541479Cb9DF944aC48D1b9A5',
+    [CHAINS_ID.ETHER]: '',
+    [CHAINS_ID.BSC]: '',
+    [CHAINS_ID.MATIC]: '',
+    [CHAINS_ID.BSC_TESTNET]: ''
+}

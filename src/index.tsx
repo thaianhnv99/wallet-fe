@@ -4,8 +4,8 @@ import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import { Web3ReactProvider } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
-import Wallet from "./components/Wallet";
 import Web3ReactManager from "./components/common/Web3ReactManager";
+import Main from "./components/views/main";
 
 function getLibrary(provider: any): Web3Provider {
   const web3Provider = new Web3Provider(provider);
@@ -21,7 +21,7 @@ root.render(
     <Web3ReactProvider getLibrary={getLibrary}>
       <Web3ReactManager>
         {/* <App /> */}
-        <Wallet />
+        <Main/>
       </Web3ReactManager>
     </Web3ReactProvider>
   </React.StrictMode>

@@ -4,9 +4,12 @@ import { useWeb3React } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
 import { Contract } from "@ethersproject/contracts";
 import abi from "../../config/abi/ERC20ABI.json";
+import { ADDRESS_SC_VOTE } from "../../constants/address";
+import { CHAINS_ID } from "../../constants/chains";
 
-const Votes = ({ addressContract }: { addressContract: any }) => {
-  const { account, active, library } = useWeb3React<Web3Provider>();
+const Votes = () => {
+  const { account, active, chainId, library } = useWeb3React<Web3Provider>();
+  const VoteSC = ADDRESS_SC_VOTE[80001];
 
   const [tickers, setTicker] = useState<{ token: string; perc: number }[]>([
     { token: "ETH", perc: 0 },
@@ -16,8 +19,8 @@ const Votes = ({ addressContract }: { addressContract: any }) => {
   ]);
 
   const contract = useMemo(() => {
-    return new Contract(addressContract, abi, library);
-  }, [addressContract, library]);
+    return new Contract(VoteSC, abi, library);
+  }, [VoteSC, library]);
 
   const getTicker = useCallback(
     async (numArr: number) => {
@@ -79,7 +82,7 @@ const Votes = ({ addressContract }: { addressContract: any }) => {
       };
 
       const contractWithSigner = new Contract(
-        addressContract,
+        VoteSC,
         abi,
         library?.getSigner()
       );
@@ -97,7 +100,7 @@ const Votes = ({ addressContract }: { addressContract: any }) => {
         alert(error.data.message);
       }
     },
-    [account, active, addressContract, fetchTicker, library]
+    [account, active, VoteSC, fetchTicker, library]
   );
 
   return (
@@ -107,7 +110,6 @@ const Votes = ({ addressContract }: { addressContract: any }) => {
         flexDirection: "row",
         gap: "1rem",
         justifyContent: "center",
-        marginTop: "5rem",
       }}
     >
       {tickers.map((item, index) => {

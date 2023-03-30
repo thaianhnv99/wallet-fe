@@ -5,7 +5,6 @@ import iconPoly from '../assets/icons/polygon.png';
 
 export enum CHAINS_ID {
     ETHER = 1,
-    RINKEBY = 4,
     MATIC = 137,
     MATIC_TESTNET = 80001,
     BSC = 56,
@@ -20,7 +19,6 @@ export enum CHAINS_ID {
 
   export const EXPLORER_LINK: { [Key in CHAINS_ID]: string } = {
     [CHAINS_ID.ETHER]: 'https://etherscan.io',
-    [CHAINS_ID.RINKEBY]: 'https://rinkeby.etherscan.io',
     [CHAINS_ID.MATIC]: 'https://polygonscan.com',
     [CHAINS_ID.MATIC_TESTNET]: 'https://mumbai.polygonscan.com',
     [CHAINS_ID.BSC]: 'https://bscscan.com',
@@ -55,18 +53,6 @@ export enum CHAINS_ID {
       },
       rpcUrls: [process.env.REACT_APP_NODE_ETH_PRODUCTION],
       blockExplorerUrls: [EXPLORER_LINK[CHAINS_ID.ETHER]],
-    },
-    [CHAINS_ID.RINKEBY]: {
-      chainId: toHex(CHAINS_ID.RINKEBY),
-      chainName: 'Rinkeby Testnet',
-  
-      nativeCurrency: {
-        name: 'ETH',
-        symbol: 'ETH',
-        decimals: 18,
-      },
-      rpcUrls: [process.env.REACT_APP_NODE_ETH_DEV1],
-      blockExplorerUrls: [EXPLORER_LINK[CHAINS_ID.RINKEBY]],
     },
     // Bsc
     [CHAINS_ID.BSC]: {
@@ -127,12 +113,6 @@ export enum CHAINS_ID {
     // Ether
     [CHAINS_ID.ETHER]: {
       ...CHAINS_RPC[CHAINS_ID.ETHER],
-      icon: iconEthereum,
-      chainNameShort: 'Ethereum',
-      chainNameSymbol: ChainName.ETH,
-    },
-    [CHAINS_ID.RINKEBY]: {
-      ...CHAINS_RPC[CHAINS_ID.RINKEBY],
       icon: iconEthereum,
       chainNameShort: 'Ethereum',
       chainNameSymbol: ChainName.ETH,

@@ -1,16 +1,15 @@
 import { useWeb3React } from "@web3-react/core";
 import { UserRejectedRequestError } from "@web3-react/injected-connector";
 import { Web3Provider } from "@ethersproject/providers";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import {
   getStateConnect,
   injected,
   setStateConnect,
 } from "../../utils/connecttors";
 import { formatAddress } from "../../utils/helpers";
-import SwitchNetwork from "./SwitchNetwork";
-import Votes from "../Votes";
-import ETHbalance from "./ETHbalance";
+import SwitchNetwork from "../SwitchNetwork";
+import ETHbalance from "../ETHBalance";
 
 const Wallet = () => {
   const {
@@ -20,7 +19,6 @@ const Wallet = () => {
     deactivate,
     setError,
     active,
-    library: provider,
   } = useWeb3React<Web3Provider>();
 
   const connected = getStateConnect();
@@ -42,15 +40,13 @@ const Wallet = () => {
       },
       false
     );
-    setStateConnect(true);
-  }, [activate, setError]);
+    setStateConnect(chainId || null);
+  }, [activate, chainId, setError]);
 
   const handleDisconnect = useCallback(() => {
     deactivate();
-    setStateConnect(false);
+    setStateConnect(null);
   }, [deactivate]);
-
-  const addressContract = "0x6ce9925389763Eaac35Ba023645A9c1996Ffc464";
 
   return (
     <div
@@ -82,9 +78,8 @@ const Wallet = () => {
       <div
         hidden={!stateConnectedApp}
         style={{
-          width: "min-content",
           margin: "auto",
-          textAlign: "left",
+          textAlign: "center",
           padding: "1rem",
         }}
       >
@@ -93,8 +88,6 @@ const Wallet = () => {
         <p>ChainId: {chainId}</p>
         <SwitchNetwork />
       </div>
-      <hr />
-      <Votes addressContract={addressContract} />
     </div>
   );
 };

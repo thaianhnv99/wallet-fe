@@ -12,6 +12,6 @@ export const getStateConnect = () => {
   return data ? JSON.parse(data) : null;
 };
 
-export const setStateConnect = (state: boolean) => {
+export const setStateConnect = (state: string | number | null) => {
   localStorage?.setItem(STATE_CONNECT_KEY, JSON.stringify(state));
 };

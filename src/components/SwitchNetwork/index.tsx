@@ -2,7 +2,7 @@ import { useWeb3React } from "@web3-react/core";
 import { CHAINS_ID, CHAINS_INFO, CHAINS_RPC } from "../../constants/chains";
 import { SupportChainIds } from "../../constants/network";
 import { Web3Provider } from "@ethersproject/providers";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const SwitchNetwork = () => {
   // get chainId from global state and below is test left
