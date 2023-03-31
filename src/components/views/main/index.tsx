@@ -5,33 +5,27 @@ import Wallet from "../../Wallet";
 const Main = () => {
   return (
     <>
+      <h2
+        style={{
+          textAlign: "center",
+        }}
+      >
+        Welcome to a decentralized Application
+      </h2>
       <Wallet />
+      <p style={{
+        textAlign: 'center'
+      }}>-----------------------------------------------</p>
+      <Votes />
+
       <hr />
       <div
         style={{
-          display: "flex",
-          flexDirection: "row",
-          flexBasis: "50%",
+          width: "50vw",
+          margin: "auto",
         }}
       >
-        <div
-          style={{
-            width: "100%",
-            borderRight: "1px solid red",
-            paddingRight: "1rem",
-          }}
-        >
-          <Votes />
-        </div>
-        <div
-          style={{
-            width: "100%",
-            padding: "1rem",
-            paddingTop: '0'
-          }}
-        >
-          <Transfer />
-        </div>
+        <Transfer />
       </div>
     </>
   );

@@ -3,9 +3,13 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import { Web3ReactProvider } from "@web3-react/core";
+import { PersistGate } from "redux-persist/integration/react";
 import { Web3Provider } from "@ethersproject/providers";
 import Web3ReactManager from "./components/common/Web3ReactManager";
 import Main from "./components/views/main";
+import Layout from "./components/views/layout";
+import { Provider } from "react-redux";
+import { persistor, store } from "./state/store";
 
 function getLibrary(provider: any): Web3Provider {
   const web3Provider = new Web3Provider(provider);
@@ -18,12 +22,18 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <Web3ReactProvider getLibrary={getLibrary}>
-      <Web3ReactManager>
-        {/* <App /> */}
-        <Main/>
-      </Web3ReactManager>
-    </Web3ReactProvider>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <Web3ReactProvider getLibrary={getLibrary}>
+          <Web3ReactManager>
+            {/* <App /> */}
+            <Layout>
+              <Main />
+            </Layout>
+          </Web3ReactManager>
+        </Web3ReactProvider>
+      </PersistGate>
+    </Provider>
   </React.StrictMode>
 );
 

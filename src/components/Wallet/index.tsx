@@ -1,52 +1,19 @@
-import { useWeb3React } from "@web3-react/core";
-import { UserRejectedRequestError } from "@web3-react/injected-connector";
-import { Web3Provider } from "@ethersproject/providers";
-import { useCallback, useMemo } from "react";
-import {
-  getStateConnect,
-  injected,
-  setStateConnect,
-} from "../../utils/connecttors";
 import { formatAddress } from "../../utils/helpers";
 import SwitchNetwork from "../SwitchNetwork";
 import ETHbalance from "../ETHBalance";
+import { useAppWallet } from "../../state/info/hooks";
+import { useWeb3Activity } from "../../hooks/useWeb3Activity";
 
 const Wallet = () => {
   const {
-    chainId,
-    account,
-    activate,
-    deactivate,
-    setError,
-    active,
-  } = useWeb3React<Web3Provider>();
-
-  const connected = getStateConnect();
-  const stateConnectedApp = useMemo(() => {
-    return !!(active && account && connected);
-  }, [account, active, connected]);
-
-  console.log();
-
-  const handleConnect = useCallback(() => {
-    activate(
-      injected,
-      (error) => {
-        if (error instanceof UserRejectedRequestError) {
-          console.log("user refused");
-        } else {
-          setError(error);
-        }
-      },
-      false
-    );
-    setStateConnect(chainId || null);
-  }, [activate, chainId, setError]);
-
-  const handleDisconnect = useCallback(() => {
-    deactivate();
-    setStateConnect(null);
-  }, [deactivate]);
+    connect,
+    disconnect,
+    state: { chainIdApp },
+  } = useAppWallet();
+  const {
+    context: { account },
+    hasAccount,
+  } = useWeb3Activity();
 
   return (
     <div
@@ -56,27 +23,23 @@ const Wallet = () => {
         margin: "2rem",
       }}
     >
-      <h2>Welcome to a decentralized Application</h2>
       <div>
-        <button
-          hidden={stateConnectedApp}
-          onClick={handleConnect}
-        >
+        <button hidden={hasAccount} onClick={connect}>
           Connect Metamark
         </button>
         <button
           style={{
             marginLeft: "10px",
           }}
-          hidden={!stateConnectedApp}
-          onClick={handleDisconnect}
+          hidden={!hasAccount}
+          onClick={disconnect}
         >
           Disconnect
         </button>
       </div>
 
       <div
-        hidden={!stateConnectedApp}
+        hidden={!hasAccount}
         style={{
           margin: "auto",
           textAlign: "center",
@@ -85,7 +48,7 @@ const Wallet = () => {
       >
         <p>Address: {formatAddress(account || "", 4)}</p>
         <ETHbalance />
-        <p>ChainId: {chainId}</p>
+        <p>ChainId: {chainIdApp}</p>
         <SwitchNetwork />
       </div>
     </div>

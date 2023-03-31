@@ -1,27 +1,37 @@
 import { ADDRESS_SC_TOKEN } from "../../constants/address";
-import { getStateConnect } from "../../utils/connecttors";
-import { CHAINS_ID } from "../../constants/chains";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Contract } from "ethers";
 import abi from "../../config/abi/TtnTokenABI.json";
 import { useWeb3React } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
-import { formatEther } from "@ethersproject/units";
+import { formatEther, parseEther } from "@ethersproject/units";
+import { isAddress } from "@ethersproject/address";
+import { useAppWallet } from "../../state/info/hooks";
+import { useWeb3Activity } from "../../hooks/useWeb3Activity";
 
 const Transfer = () => {
-  const { library, account, active } = useWeb3React<Web3Provider>();
-  const chainIdApp = getStateConnect();
-  const scAddress = ADDRESS_SC_TOKEN[chainIdApp as CHAINS_ID];
-  const sc = useMemo(() => {
-    if (library && active && account) {
-      return new Contract(scAddress, abi, library);
-    } else {
-      return null;
-    }
-  }, [account, active, library, scAddress]);
+  const { library } = useWeb3React<Web3Provider>();
+  const {
+    state: { chainIdApp },
+  } = useAppWallet();
+  const { hasAccount, account } = useWeb3Activity();
+  const scAddress = ADDRESS_SC_TOKEN[chainIdApp];
 
+  const sc = useMemo(() => {
+    if (scAddress && library && hasAccount) {
+      return new Contract(scAddress, abi, library);
+    }
+    return null;
+  }, [hasAccount, library, scAddress]);
+
+  const [isLoading, setLoading] = useState<boolean>(false);
   const [address, setAddress] = useState<string | null>();
   const [balanceByAddress, setBalanceByAddress] = useState<string | null>(null);
+  const [recipientAddress, setrecipientAddress] = useState<string | null>();
+  const [balanceOfRecipient, setBalanceOfRecipient] = useState<string | null>(
+    null
+  );
+  const [amountTransfer, setAmountTransfer] = useState<number | null>();
   const [tokenInfo, setTokenInfo] = useState<{
     name?: string;
     symbol?: string;
@@ -51,10 +61,10 @@ const Transfer = () => {
   }, [sc]);
 
   const fetchBalanceOfAddress = useCallback(
-    async (address: string) => {
+    async (address: string, setBalanceOf: (value: string) => void) => {
       try {
         await sc?.balanceOf(address).then((result: any) => {
-          setBalanceByAddress(formatEther(result));
+          setBalanceOf(formatEther(result));
         });
       } catch (error) {
         console.log(error);
@@ -63,18 +73,51 @@ const Transfer = () => {
     [sc]
   );
 
+  const handleTransferTo = useCallback(async () => {
+    if (!recipientAddress || !amountTransfer) return;
+
+    setLoading(true);
+    const scWithSign = new Contract(scAddress, abi, library?.getSigner());
+    try {
+      const amountWei = parseEther(amountTransfer.toString());
+      const tx = await scWithSign?.transfer(recipientAddress, amountWei);
+      await tx.wait();
+
+      console.log("success");
+      fetchBalanceOfAddress(account || "", setBalanceByAddress);
+      fetchBalanceOfAddress(recipientAddress, setBalanceOfRecipient);
+      setAmountTransfer(null);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [
+    account,
+    amountTransfer,
+    fetchBalanceOfAddress,
+    library,
+    recipientAddress,
+    scAddress,
+  ]);
+
   useEffect(() => {
     fetchTokenInfo();
   }, [fetchTokenInfo]);
 
   useEffect(() => {
-    if (account && active) {
+    if (account && hasAccount) {
       setAddress(account);
-      fetchBalanceOfAddress(account);
+      fetchBalanceOfAddress(account, setBalanceByAddress);
     }
-  }, [account, active, fetchBalanceOfAddress]);
+  }, [account, hasAccount, fetchBalanceOfAddress]);
+
+  useEffect(() => {
+    if (recipientAddress && isAddress(recipientAddress)) {
+      fetchBalanceOfAddress(recipientAddress, setBalanceOfRecipient);
+    }
+  }, [fetchBalanceOfAddress, recipientAddress]);
   return (
-    <div>
+    <div hidden={!hasAccount}>
       <div>
         <h3>Read from smart contract</h3>
         <input
@@ -108,13 +151,65 @@ const Transfer = () => {
               width: "100%",
             }}
           />
-          <button onClick={() => fetchBalanceOfAddress(address || "")}>
+          <button
+            onClick={() =>
+              fetchBalanceOfAddress(address || "", setBalanceByAddress)
+            }
+          >
             Get
           </button>
         </div>
-        <p>Balance: {balanceByAddress}</p>
+        <p>
+          Balance: {balanceByAddress} ({tokenInfo?.symbol})
+        </p>
       </div>
       <hr />
+      <div>
+        <h4>*Transfer to::</h4>
+        <div>
+          <span>
+            Receiving address{" "}
+            {balanceOfRecipient
+              ? `(${balanceOfRecipient} ${tokenInfo?.symbol})`
+              : ""}
+          </span>
+          <input
+            value={recipientAddress || ""}
+            onChange={(e) => setrecipientAddress(e.target.value)}
+            style={{
+              width: "100%",
+            }}
+          />
+        </div>
+        <div
+          style={{
+            marginTop: "1rem",
+          }}
+        >
+          <span>Amount ({tokenInfo?.symbol})</span>
+          <input
+            value={amountTransfer || ""}
+            onChange={(e) => {
+              const amount = Number(e.target.value);
+              if (!isNaN(amount)) {
+                setAmountTransfer(amount);
+              }
+            }}
+            style={{
+              width: "100%",
+            }}
+          />
+        </div>
+        <button
+          style={{
+            marginTop: "1rem",
+          }}
+          disabled={isLoading}
+          onClick={handleTransferTo}
+        >
+          {isLoading ? "Loading..." : "Submit"}
+        </button>
+      </div>
     </div>
   );
 };

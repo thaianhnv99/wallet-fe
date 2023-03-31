@@ -13,5 +13,7 @@ export const getStateConnect = () => {
 };
 
 export const setStateConnect = (state: string | number | null) => {
+  console.log(localStorage, JSON.stringify(state));
+  
   localStorage?.setItem(STATE_CONNECT_KEY, JSON.stringify(state));
 };
