@@ -5,10 +5,9 @@ import { Web3Provider } from "@ethersproject/providers";
 import { Contract } from "@ethersproject/contracts";
 import abi from "../../config/abi/ERC20ABI.json";
 import { ADDRESS_SC_VOTE } from "../../constants/address";
-import { CHAINS_ID } from "../../constants/chains";
 
 const Votes = () => {
-  const { account, active, chainId, library } = useWeb3React<Web3Provider>();
+  const { account, active, library } = useWeb3React<Web3Provider>();
   const VoteSC = ADDRESS_SC_VOTE[80001];
 
   const [tickers, setTicker] = useState<{ token: string; perc: number }[]>([
@@ -77,9 +76,9 @@ const Votes = () => {
   const handleVote = useCallback(
     async (tick: string, pool: boolean) => {
       if (!account || !active) {
-        alert('Connect metamark');
+        alert("Connect metamark");
         return;
-      };
+      }
 
       const contractWithSigner = new Contract(
         VoteSC,
@@ -106,10 +105,12 @@ const Votes = () => {
   return (
     <div
       style={{
-        display: "flex",
-        flexDirection: "row",
-        gap: "1rem",
-        justifyContent: "center",
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(100px, 1fr))",
+        maxWidth: "700px",
+        margin: "auto",
+        gap: '1rem',
+        textAlign: 'center'
       }}
     >
       {tickers.map((item, index) => {

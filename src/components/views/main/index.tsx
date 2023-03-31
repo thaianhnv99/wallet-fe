@@ -1,6 +1,7 @@
 import Transfer from "../../Transfer";
 import Votes from "../../Votes";
 import Wallet from "../../Wallet";
+import "./transfer.scss";
 
 const Main = () => {
   return (
@@ -20,10 +21,7 @@ const Main = () => {
 
       <hr />
       <div
-        style={{
-          width: "50vw",
-          margin: "auto",
-        }}
+        className="transfer-box"
       >
         <Transfer />
       </div>

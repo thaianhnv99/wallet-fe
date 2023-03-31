@@ -1,0 +1,10 @@
+.transfer-box {
+    margin: auto;
+    padding: 1rem;
+}
+
+@media (min-width: 768px) {
+    .transfer-box {
+        width: 50vw;
+    }
+}
