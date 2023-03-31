@@ -1,10 +1,36 @@
-.transfer-box {
-    margin: auto;
-    padding: 1rem;
+.wrapper-from {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    .transfer-box {
+        margin: auto;
+        padding: 1rem;
+        width: 100%;
+    }
+
+    .transaction-view {
+        padding: 1rem;
+        width: 100%;
+    }
+
 }
 
 @media (min-width: 768px) {
-    .transfer-box {
-        width: 50vw;
+    .wrapper-from {
+        flex-wrap: nowrap;
+        width: 80%;
+        margin: auto;
+
+        .transfer-box {
+            width: 60%;
+        }
+
+        .transaction-view {
+            width: 40%;
+        }
     }
+
+
 }

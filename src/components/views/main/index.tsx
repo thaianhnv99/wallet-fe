@@ -1,3 +1,4 @@
+import TransactionList from "../../TransactionView";
 import Transfer from "../../Transfer";
 import Votes from "../../Votes";
 import Wallet from "../../Wallet";
@@ -14,16 +15,23 @@ const Main = () => {
         Welcome to a decentralized Application
       </h2>
       <Wallet />
-      <p style={{
-        textAlign: 'center'
-      }}>-----------------------------------------------</p>
+      <p
+        style={{
+          textAlign: "center",
+        }}
+      >
+        -----------------------------------------------
+      </p>
       <Votes />
 
       <hr />
-      <div
-        className="transfer-box"
-      >
-        <Transfer />
+      <div className="wrapper-from">
+        <div className="transfer-box">
+          <Transfer />
+        </div>
+        <div className="transaction-view">
+          <TransactionList/>
+        </div>
       </div>
     </>
   );

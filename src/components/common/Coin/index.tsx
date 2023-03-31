@@ -10,7 +10,7 @@ const Coin = ({
   return (
     <div
       style={{
-        width: "100px",
+        width: "100%",
         padding: "10px",
         display: "flex",
         flexDirection: "column",
@@ -26,6 +26,7 @@ const Coin = ({
           display: "flex",
           gap: "10px",
           marginTop: "1rem",
+          justifyContent: 'center'
         }}
       >
         <button onClick={() => setPerc(true)}>Up</button>
