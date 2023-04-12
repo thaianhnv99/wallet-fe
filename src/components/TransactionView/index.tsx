@@ -1,7 +1,7 @@
 import { useWeb3React } from "@web3-react/core";
 import { useCallback, useEffect, useState } from "react";
 import { Web3Provider } from "@ethersproject/providers";
-import { useWeb3Activity } from "../../hooks/useWeb3Activity";
+import { useWeb3Activity } from "@hooks/useWeb3Activity";
 
 const TransactionList = () => {
   const { library } = useWeb3React<Web3Provider>();

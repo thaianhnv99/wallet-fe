@@ -1,13 +1,13 @@
-import { ADDRESS_SC_TOKEN } from "../../constants/address";
+import { ADDRESS_SC_TOKEN } from "@constants/address";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Contract } from "ethers";
-import abi from "../../config/abi/TtnTokenABI.json";
+import abi from "@config/abi/TtnTokenABI.json";
 import { useWeb3React } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
 import { formatEther, parseEther } from "@ethersproject/units";
 import { isAddress } from "@ethersproject/address";
-import { useAppWallet } from "../../state/info/hooks";
-import { useWeb3Activity } from "../../hooks/useWeb3Activity";
+import { useAppWallet } from "@state/info/hooks";
+import { useWeb3Activity } from "@hooks/useWeb3Activity";
 
 const Transfer = () => {
   const { library } = useWeb3React<Web3Provider>();

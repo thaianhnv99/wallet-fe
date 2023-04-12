@@ -1,8 +1,8 @@
-import { formatAddress } from "../../utils/helpers";
+import { formatAddress } from "@utils/helpers";
 import SwitchNetwork from "../SwitchNetwork";
 import ETHbalance from "../ETHBalance";
-import { useAppWallet } from "../../state/info/hooks";
-import { useWeb3Activity } from "../../hooks/useWeb3Activity";
+import { useAppWallet } from "@state/info/hooks";
+import { useWeb3Activity } from "@hooks/useWeb3Activity";
 
 const Wallet = () => {
   const {

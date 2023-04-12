@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { useWeb3React } from "@web3-react/core";
 import { _connect, _disconnect, _setChain } from "./reducer";
-import { injected } from "../../utils/connecttors";
+import { injected } from "@utils/connecttors";
 
 export const useAppWallet = () => {
   const dispatch = useAppDispatch();

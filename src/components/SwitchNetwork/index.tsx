@@ -1,6 +1,6 @@
 import { useWeb3React } from "@web3-react/core";
-import { CHAINS_ID, CHAINS_INFO, CHAINS_RPC } from "../../constants/chains";
-import { SupportChainIds } from "../../constants/network";
+import { CHAINS_ID, CHAINS_INFO, CHAINS_RPC } from "@constants/chains";
+import { SupportChainIds } from "@constants/network";
 import { Web3Provider } from "@ethersproject/providers";
 import { useState } from "react";
 

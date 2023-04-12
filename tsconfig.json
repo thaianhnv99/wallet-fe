@@ -19,8 +19,18 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
+    "baseUrl": "src",
+    "paths": {
+      "@hooks": ["hooks"],
+      "@hooks/*": ["hooks/*"],
+      "@utils/*": ["utils/*"],
+      "@constants/*": ["constants/*"],
+      "@state/*": ["state/*"],
+      "@config/*": ["config/*"]
+    }
   },
   "include": [
-    "src", "src/declare.d.ts"
+    "src/declare.d.ts",
+    "src/**/*"
   ]
 }

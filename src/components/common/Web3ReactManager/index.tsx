@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { useEagerConnect } from "../../../hooks/useEagerConnect";
+import { useEagerConnect } from "@hooks/useEagerConnect";
 import { useWeb3React } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
-import { useInactiveListener } from "../../../hooks/useInactiveListener";
-import { SupportChainIds } from "../../../constants/network";
-import { useAppWallet } from "../../../state/info/hooks";
+import { useInactiveListener } from "@hooks/useInactiveListener";
+import { SupportChainIds } from "@constants/network";
+import { useAppWallet } from "@state/info/hooks";
 interface Web3ReactManagerProps {
   children?: any;
 }

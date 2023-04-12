@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { CHAINS_ID } from "../../constants/chains";
+import { CHAINS_ID } from "@constants/chains";
 
 export interface IWallet {
   name?: string;

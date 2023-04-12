@@ -1,6 +1,6 @@
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { useAppWallet } from '../state/info/hooks';
+import { useAppWallet } from '@state/info/hooks';
 
 export function useWeb3Activity() {
     const context = useWeb3React<Web3Provider>();

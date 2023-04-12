@@ -1,6 +1,6 @@
 import { useWeb3React } from '@web3-react/core';
 import { useEffect } from 'react';
-import { injected } from '../utils/connecttors';
+import { injected } from '@utils/connecttors';
 
 export function useInactiveListener(suppress = false) {
   const { active, error, activate } = useWeb3React();

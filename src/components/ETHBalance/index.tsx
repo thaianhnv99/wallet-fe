@@ -2,8 +2,8 @@ import { useWeb3React } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
 import { formatEther } from "@ethersproject/units";
 import { useCallback, useEffect, useState } from "react";
-import { CHAINS_ID, CHAINS_INFO } from "../../constants/chains";
-import { getStateConnect } from "../../utils/connecttors";
+import { CHAINS_ID, CHAINS_INFO } from "@constants/chains";
+import { getStateConnect } from "@utils/connecttors";
 
 const ETHbalance = () => {
   const [userBalance, setUserBalance] = useState<string | null>(null);

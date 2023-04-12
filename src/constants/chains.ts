@@ -1,7 +1,7 @@
-import { toHex } from "../utils/string";
-import iconEthereum from '../assets/icons/ethereum.png';
-import iconBSC from '../assets/icons/bsc.png';
-import iconPoly from '../assets/icons/polygon.png';
+import { toHex } from "@utils/string";
+import iconEthereum from '@assets/icons/ethereum.png';
+import iconBSC from '@assets/icons/bsc.png';
+import iconPoly from '@assets/icons/polygon.png';
 
 export enum CHAINS_ID {
     ETHER = 1,
